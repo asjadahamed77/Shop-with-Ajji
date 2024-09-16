@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import search_icon from "../assets/search_icon.png";
 import profile_icon from "../assets/profile_icon.png";
 import cart_icon from "../assets/cart_icon.png";
 import menu_icon from "../assets/menu_icon.png";
 import dropdown_icon from "../assets/dropdown_icon.png";
+import { ShopContext } from "../context/ShopContext";
 const Navbar = () => {
   // Get the current route
   const location = useLocation();
   const currentPath = location.pathname;
 const [visible,setVisible] = useState(false)
+const {setShowSearch} = useContext(ShopContext)
   return (
     <div className="flex justify-between items-center py-5 font-medium">
       <div>
@@ -50,7 +52,7 @@ const [visible,setVisible] = useState(false)
         </li>
       </ul>
       <div className="flex items-center gap-6">
-        <img src={search_icon} alt="search" className="w-5 cursor-pointer" />
+        <img onClick={()=>setShowSearch(true)} src={search_icon} alt="search" className="w-5 cursor-pointer" />
         <div className="group relative">
           <img
             src={profile_icon}
