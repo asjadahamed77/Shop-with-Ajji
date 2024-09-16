@@ -15,7 +15,7 @@ const {setShowSearch, getCartCount} = useContext(ShopContext)
   return (
     <div className="flex justify-between items-center py-5 font-medium">
       <div>
-        <h1>ShopWith-Ajji</h1>
+        <Link to={'/'}><h1>ShopWith-Ajji</h1></Link>
       </div>
       <ul className="hidden sm:flex gap-5 text-m text-gray-700">
         <li>
