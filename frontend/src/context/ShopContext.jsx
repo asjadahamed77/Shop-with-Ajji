@@ -7,6 +7,7 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
   const currency = "Rs";
   const delivery_fee = 300;
+  const [token,setToken] = useState("")
   const [products,setProducts] = useState([])
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -88,6 +89,11 @@ const ShopContextProvider = (props) => {
     getProductsData()
   },[])
 
+  useEffect(()=>{
+    if(!token && localStorage.getItem("token"))
+      setToken(localStorage.getItem("token"))
+  },[])
+
   const value = {
     products,
     currency,
@@ -97,10 +103,13 @@ const ShopContextProvider = (props) => {
     showSearch,
     setShowSearch,
     cartItems,
+    setCartItems,
     addToCart,
     getCartCount,
     updateQuantity,
     getCartAmount,
+    token,
+    setToken
   };
 
   return (
