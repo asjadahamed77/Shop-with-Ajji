@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
-import { backendUrl } from "../helpers/backendUrl";
+import backendUrl from "../helpers/backendUrl";
 import { toast } from "react-toastify";
 import axios from "axios";
 const Login = () => {

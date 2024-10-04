@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
-import { backendUrl } from '../helpers/backendUrl'
+import backendUrl from '../helpers/backendUrl'
 const PlaceOrder = () => {
   const {token, cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext)
   const [method,setMethod] = useState('cod')

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import  axios  from 'axios'
 import { toast } from "react-toastify";
-import { backendUrl } from "../helpers/backendUrl";
+import backendUrl from "../helpers/backendUrl";
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
