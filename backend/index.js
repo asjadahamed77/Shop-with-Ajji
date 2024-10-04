@@ -12,11 +12,7 @@ import orderRouter from './routes/orderRoute.js'
 const app = express()
 const port = process.env.PORT || 8000
 connectDB()
-try {
-    await connectCloudinary();
-} catch (error) {
-    console.error("Error connecting to Cloudinary:", error);
-}
+connectCloudinary()
 
 //middlewares
 app.use(express.json())
