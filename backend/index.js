@@ -10,22 +10,22 @@ import orderRouter from './routes/orderRoute.js'
 
 // App Config
 const app = express()
-const port = process.env.PORT || 8000
 connectDB()
 connectCloudinary()
 
-//middlewares
+// Middlewares
 app.use(express.json())
 app.use(cors())
 
-//api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
-app.use('/api/cart',cartRouter)
-app.use('/api/order',orderRouter)
+// API Endpoints
+app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
 
-app.get('/',(req,res)=>{
-    res.send("API WORKING")
+app.get('/', (req, res) => {
+  res.send('API WORKING')
 })
 
-app.listen(port, ()=> console.log("Server started on PORT: "+port))
+// Export the app for Vercel
+export default app
