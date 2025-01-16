@@ -6,7 +6,7 @@ const Footer = () => {
       <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm '>
         <div>
             <h1 className='text-xl mb-5'>ShopWith-Ajji</h1>
-            <p className='w-full md:w-2/3 text-gray-600'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam numquam eaque laudantium dolores adipisci sint, praesentium expedita aperiam odio ullam?</p>
+            <p className='w-full md:w-2/3 text-gray-600'>We believe clothing is more than just fabric—it's an expression of who you are. Our mission is to bring you stylish, high-quality, and affordable fashion that makes you look and feel your best.</p>
         </div>
         <div>
             <p className='font-medium text-xl mb-5'>COMPANY</p>
