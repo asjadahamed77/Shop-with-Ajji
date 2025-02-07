@@ -2,7 +2,7 @@
 
 ShopWith-Ajji is a fully responsive and feature-rich e-commerce platform built using the **MERN stack**. It provides a seamless shopping experience with an intuitive and visually appealing interface.
 
-![Frontend Screenshot](./assets/ShopWithAjji.png)
+![Frontend Screenshot](./frontend/src/assets/ShopWithAjji.png)
 
 
 ---
