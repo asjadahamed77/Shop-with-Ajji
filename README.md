@@ -28,15 +28,3 @@ ShopWith-Ajji is a fully responsive and feature-rich e-commerce platform built u
 - **Authentication:** JWT for secure user login and account management.
 - **Deployment:** Fully optimized for responsiveness and performance.
 
----
-
-## Setup Instructions
-### Prerequisites:
-- Node.js installed
-- MongoDB instance running
-
-### Steps to Run:
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/asjadahamed77/ShopWith-Ajji.git
-   cd ShopWith-Ajji
