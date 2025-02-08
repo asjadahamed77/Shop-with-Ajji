@@ -5,6 +5,7 @@ ShopWith-Ajji is a fully responsive and feature-rich e-commerce platform built u
 ![Frontend Screenshot](./frontend/src/assets/ShopWithAjji.png)
 
 
+
 ---
 
 ## Features

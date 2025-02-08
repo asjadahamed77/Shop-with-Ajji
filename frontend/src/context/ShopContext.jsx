@@ -10,7 +10,7 @@ const ShopContextProvider = (props) => {
   const [token,setToken] = useState("")
   const [products,setProducts] = useState([])
   const [search, setSearch] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(fals);
   const [cartItems, setCartItems] = useState({});
 
 
