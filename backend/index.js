@@ -11,23 +11,46 @@ import orderRouter from './routes/orderRoute.js'
 // App Config
 const app = express()
 const port = process.env.PORT || 8000
-connectDB()
-connectCloudinary()
+
+// Connect to MongoDB and Cloudinary
+try {
+  connectDB()
+  connectCloudinary()
+} catch (error) {
+  console.error("Connection error:", error)
+}
 
 //middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: '*', // Allow all origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 //api endpoints
-app.use('/api/user',userRouter)
-app.use('/api/product',productRouter)
-app.use('/api/cart',cartRouter)
-app.use('/api/order',orderRouter)
+app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
 
-app.get('/',(req,res)=>{
-    res.send("API WORKING")
+app.get('/', (req, res) => {
+  res.send("API WORKING")
 })
 
-app.listen(port, ()=> console.log("Server started on PORT: "+port))
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ 
+    success: false, 
+    message: 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+  });
+});
+
+// Only start the server if we're not in a serverless environment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => console.log("Server started on PORT: " + port))
+}
 
 export default app
