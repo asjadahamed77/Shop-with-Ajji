@@ -1,39 +1,41 @@
 import mongoose from "mongoose"
 
-// Cache the connection
-let cachedConnection = null;
+let isConnected = false;
 
 const connectDB = async () => {
-  try {
-    // If we already have a connection, return it
-    if (cachedConnection) {
-      console.log("Using cached MongoDB connection");
-      return cachedConnection;
-    }
-
-    // Set connection options
-    const options = {
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      maxPoolSize: 10, // Limit connection pool size
-      minPoolSize: 0, // Allow connections to be closed when idle
-    };
-
-    // Connect to MongoDB
-    const uri = `${process.env.MONGODB_URI}/ShopWithAjji`;
-    console.log("Connecting to MongoDB...");
-    
-    const connection = await mongoose.connect(uri, options);
-    console.log("DB Connected successfully");
-    
-    // Cache the connection
-    cachedConnection = connection;
-    return connection;
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    // Don't throw the error to allow the application to continue
-    return null;
+  if (isConnected) {
+    console.log('=> Using existing database connection');
+    return;
   }
-}
 
-export default connectDB
+  try {
+    const db = await mongoose.connect(`${process.env.MONGODB_URI}/ShopWithAjji`, {
+      maxPoolSize: 1,
+    });
+
+    isConnected = !!db.connections[0].readyState;
+    console.log('=> Using new database connection');
+  } catch (error) {
+    console.error('Database Connection Error:', error.message);
+    throw error; // Let the error be handled by the middleware
+  }
+};
+
+// Handle connection errors
+mongoose.connection.on('error', (err) => {
+  console.error('MongoDB connection error:', err);
+  isConnected = false;
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+  isConnected = false;
+});
+
+// Handle process termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  process.exit(0);
+});
+
+export default connectDB;

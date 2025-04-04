@@ -10,62 +10,63 @@ import orderRouter from './routes/orderRoute.js'
 
 // App Config
 const app = express()
-const port = process.env.PORT || 8000
-
-// Initialize database connections
-let dbConnection = null;
 
 // Middleware to ensure database connection
-const ensureDbConnected = async (req, res, next) => {
+const connectMiddleware = async (req, res, next) => {
   try {
-    if (!dbConnection) {
-      dbConnection = await connectDB();
-      await connectCloudinary();
-    }
+    await connectDB();
+    await connectCloudinary();
     next();
   } catch (error) {
-    console.error("Database connection error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Database connection error' 
+    console.error('Connection error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Unable to connect to database'
     });
   }
 };
 
-//middlewares
-app.use(express.json())
+// Basic middlewares
+app.use(express.json());
 app.use(cors({
-  origin: '*', // Allow all origins
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}))
+}));
 
-// Apply database connection middleware to all routes
-app.use(ensureDbConnected);
+// Health check endpoint (no DB connection required)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
-//api endpoints
-app.use('/api/user', userRouter)
-app.use('/api/product', productRouter)
-app.use('/api/cart', cartRouter)
-app.use('/api/order', orderRouter)
+// Apply database connection middleware to all API routes
+app.use('/api', connectMiddleware);
 
+// API endpoints
+app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/order', orderRouter);
+
+// Root endpoint (no DB connection required)
 app.get('/', (req, res) => {
-  res.json({ message: "API WORKING", status: "ok" })
-})
+  res.json({ message: "API WORKING", status: "ok" });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: 'Internal Server Error',
     error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
   });
 });
 
-// Only start the server if we're not in a serverless environment
+// Start server if not in production
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => console.log("Server started on PORT: " + port))
+  const port = process.env.PORT || 8000;
+  app.listen(port, () => console.log(`Server started on PORT: ${port}`));
 }
 
-export default app
+export default app;
