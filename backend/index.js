@@ -11,20 +11,10 @@ import orderRouter from './routes/orderRoute.js'
 // App Config
 const app = express()
 
-// Middleware to ensure database connection
-const connectMiddleware = async (req, res, next) => {
-  try {
-    await connectDB();
-    await connectCloudinary();
-    next();
-  } catch (error) {
-    console.error('Connection error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Unable to connect to database'
-    });
-  }
-};
+
+     connectDB();
+     connectCloudinary();
+
 
 // Basic middlewares
 app.use(express.json());
@@ -34,13 +24,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Health check endpoint (no DB connection required)
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
 
-// Apply database connection middleware to all API routes
-app.use('/api', connectMiddleware);
 
 // API endpoints
 app.use('/api/user', userRouter);
@@ -53,20 +37,10 @@ app.get('/', (req, res) => {
   res.json({ message: "API WORKING", status: "ok" });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({
-    success: false,
-    message: 'Internal Server Error',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
-  });
-});
+const port = process.env.PORT || 8000;
 
-// Start server if not in production
-if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 8000;
-  app.listen(port, () => console.log(`Server started on PORT: ${port}`));
-}
+app.listen(port, () => console.log(`Server started on PORT: ${port}`));
+
+
 
 export default app;

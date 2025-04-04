@@ -1,41 +1,13 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-let isConnected = false;
 
-const connectDB = async () => {
-  if (isConnected) {
-    console.log('=> Using existing database connection');
-    return;
-  }
+const connectDB = async ()=>{
 
-  try {
-    const db = await mongoose.connect(`${process.env.MONGODB_URI}/ShopWithAjji`, {
-      maxPoolSize: 1,
-    });
+    mongoose.connection.on('connected',()=>{
+        console.log("DB Connected")
+    })
 
-    isConnected = !!db.connections[0].readyState;
-    console.log('=> Using new database connection');
-  } catch (error) {
-    console.error('Database Connection Error:', error.message);
-    throw error; // Let the error be handled by the middleware
-  }
-};
+    await mongoose.connect(`${process.env.MONGODB_URI}/shop`)
+}
 
-// Handle connection errors
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-  isConnected = false;
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB disconnected');
-  isConnected = false;
-});
-
-// Handle process termination
-process.on('SIGINT', async () => {
-  await mongoose.connection.close();
-  process.exit(0);
-});
-
-export default connectDB;
+export default connectDB
